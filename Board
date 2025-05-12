@@ -1,0 +1,76 @@
+public class Board {
+    private final int ROWS;
+    private final int COLS;
+    char[][] board;
+
+    public Board(int ROWS,int COLS){
+        this.ROWS = ROWS;
+        this.COLS = COLS;
+        board = new char[this.ROWS][this.COLS];
+    }
+
+    public void initializeBoard() {
+        for (int i=0;i<ROWS;i++){
+            for (int j=0;j<COLS;j++){
+                board[i][j] = ' ';
+            }
+        }
+    }
+
+    public int dropColor(int col, Player player) {
+        for (int row= ROWS-1;row>=0;row--){
+            if (board[row][col]==' '){
+                board[row][col] = player.getSymbol();
+                return row;
+            }
+        }
+        return -1;
+    }
+
+    public boolean checkWin(int row, int col, Player player) {
+        char symbol = player.getSymbol();
+        for (int r=0;r<=ROWS-4;r++){
+            if (board[r][col]==symbol && board[r+1][col]==symbol && board[r+2][col]==symbol && board[r+3][col]==symbol){
+                return true;
+            }
+        }
+
+
+        for (int c=0;c<=COLS-4;c++){
+            if (board[row][c]==symbol && board[row][c+1]==symbol && board[row][c+2]==symbol && board[row][c+3]==symbol){
+                return true;
+            }
+        }
+
+        for (int r=0;r<= ROWS-4;r++){
+            for (int c=0;c<= COLS-4;c++){
+                if (board[r][c]==symbol && board[r+1][c+1]==symbol && board[r+2][c+2]==symbol && board[r+3][c+3]==symbol){
+                    return true;
+                }
+            }
+        }
+
+        for (int r=3;r<ROWS;r++){
+            for (int c=0;c<=COLS-4;c++){
+                if (board[r][c]==symbol && board[r-1][c+1]==symbol && board[r-2][c+2]==symbol && board[r-3][c+3]==symbol){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public void displayBoard() {
+        for (int i=0;i< ROWS;i++){
+            for (int j=0;j< COLS;j++){
+                System.out.print("|"+board[i][j]);
+            }
+            System.out.println("|");
+        }
+    }
+
+    public boolean isValidColumn(int col) {
+        return col >= 0 && col < COLS && board[0][col] == ' ';
+    }
+}
