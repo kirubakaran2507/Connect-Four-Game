@@ -1,0 +1,59 @@
+import java.util.Scanner;
+
+public class Game implements ConnectFourGame{
+    private static Game game;
+    private static Scanner scanner;
+    Player player1;
+    Player player2;
+    Player currPlayer;
+    Board board;
+
+    private Game(){
+        board = new Board(6,7);
+        player1 = new Player("prem",'X');
+        player2 = new Player("karan",'O');
+        currPlayer = player1;
+        board.initializeBoard();
+    }
+
+    public static Game getInstance() {
+        if (game == null) {
+            game = new Game();
+        }
+        return game;
+    }
+
+    @Override
+    public void playGame() {
+        board.displayBoard();
+        boolean isGameWon = false;
+
+        while (!isGameWon){
+            System.out.println("Player "+ currPlayer.getName()+"'s turn");
+            System.out.println("Enter column number(0-6)");
+
+            int col = getScanner().nextInt();
+
+            if (!board.isValidColumn(col)){
+                System.out.println("Invalid column");
+                continue;
+            }
+
+            int row = board.dropColor(col,currPlayer);
+            board.displayBoard();
+
+            if (board.checkWin(row,col,currPlayer)){
+                isGameWon = true;
+                System.out.println("Player "+player1.getName()+" won");
+            }
+            currPlayer = (currPlayer.equals(player1)) ? player2 : player1;
+        }
+    }
+
+    public Scanner getScanner(){
+        if (scanner==null){
+            scanner = new Scanner(System.in);
+        }
+        return scanner;
+    }
+}
